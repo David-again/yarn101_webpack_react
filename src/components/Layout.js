@@ -10,12 +10,9 @@ const Layout = ({ children }) => {
   return (
     <Container>
       <Link to="/">
-        {/* <Header as="h1" className="h2 h1">
+        <Header as="h1" className="h2 h1">
           webpack-for-react
-        </Header> */}
-
-        <Header> Some Header </Header>
-
+        </Header>
       </Link>
       {children}
       <Divider />
