@@ -5,9 +5,36 @@ const port = process.env.PORT || 3000;
 
 module.exports = {
   mode: 'development',  
-  entry: './src/index.js',
+  entry: {
+    vendor: ['semantic-ui-react'],
+    app: './src/index.js'
+  },
   output: {
-    filename: 'bundle.[hash].js'
+    filename: '[name].[hash].js',
+    publicPath: '/'
+  },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true
+        },
+        vendor: {
+          chunks: 'initial',
+          test: 'vendor',
+          name: 'vendor',
+          enforce: true
+        }
+      }
+    }
+  },
+  resolve: {
+    alias: {
+      "react-dom": "@hot-loader/react-dom",
+    }
   },
   devtool: 'inline-source-map',
   module: {
@@ -24,18 +51,14 @@ module.exports = {
             loader: 'style-loader'
           },
           {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-              localsConvention: 'camelCase',
-              sourceMap: true
-            }
-          }
+            loader: 'css-loader'
+          },
         ]
       }
     ]
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
       favicon: 'public/favicon.ico'
@@ -45,6 +68,7 @@ module.exports = {
     host: 'localhost',
     port: port,
     historyApiFallback: true,
-    open: true
+    open: true,
+    hot: true
   }
 };
